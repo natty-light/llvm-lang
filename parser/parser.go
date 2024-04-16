@@ -71,11 +71,7 @@ func New(l *lexer.Lexer) *Parser {
 	p.registerPrefix(token.Number, p.parseFloatLiteral)
 	p.registerPrefix(token.Bang, p.parsePrefixExpr)
 	p.registerPrefix(token.Minus, p.parsePrefixExpr)
-	// p.registerPrefix(token.True, p.parseBooleanLiteral)
-	// p.registerPrefix(token.False, p.parseBooleanLiteral)
 	p.registerPrefix(token.LeftParen, p.parseGroupedExpr)
-	// p.registerPrefix(token.If, p.parseIfExpr)
-	// p.registerPrefix(token.Func, p.parseFunctionLiteral)
 	p.registerPrefix(token.String, p.parseStringLiteral)
 	p.registerPrefix(token.LeftSquareBracket, p.parseArrayLiteral)
 	p.registerPrefix(token.LeftCurlyBracket, p.parseHashLiteral)
@@ -342,9 +338,9 @@ func (p *Parser) parseIdentifier() ast.Expr {
 
 // this is an prefixParseFn, so it will not call p.nextToken() at the end
 func (p *Parser) parseIntegerLiteral() ast.Expr {
-	literal := &ast.IntegerLiteral{Token: p.currToken}
+	literal := &ast.NumberLiteral{Token: p.currToken}
 
-	value, err := strconv.ParseInt(p.currToken.Literal, 0, 64)
+	value, err := strconv.ParseFloat(p.currToken.Literal, 64)
 
 	if err != nil {
 		msg := fmt.Sprintf("could not parse %q as integer", p.currToken.Literal)
@@ -550,10 +546,6 @@ func (p *Parser) parseIndexExpr(left ast.Expr) ast.Expr {
 	}
 
 	return expr
-}
-
-func (p *Parser) parseNullLiteral() ast.Expr {
-	return &ast.NullLiteral{Token: p.currToken}
 }
 
 func (p *Parser) parseForStmt() *ast.ForStmt {

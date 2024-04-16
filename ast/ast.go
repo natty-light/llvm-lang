@@ -73,14 +73,9 @@ type (
 // Expressions and literals
 type (
 	// Literals
-	IntegerLiteral struct {
+	NumberLiteral struct {
 		Token token.Token
-		Value int64
-	}
-
-	BooleanLiteral struct {
-		Token token.Token
-		Value bool
+		Value float64
 	}
 
 	FunctionLiteral struct {
@@ -98,10 +93,6 @@ type (
 	ArrayLiteral struct {
 		Token    token.Token
 		Elements []Expr
-	}
-
-	NullLiteral struct {
-		Token token.Token
 	}
 
 	HashLiteral struct {
@@ -184,7 +175,7 @@ func (i *Identifier) TokenLiteral() string {
 	return i.Token.Literal
 }
 
-func (i *IntegerLiteral) TokenLiteral() string {
+func (i *NumberLiteral) TokenLiteral() string {
 	return i.Token.Literal
 }
 
@@ -194,10 +185,6 @@ func (p *PrefixExpr) TokenLiteral() string {
 
 func (i *InfixExpr) TokenLiteral() string {
 	return i.Token.Literal
-}
-
-func (b *BooleanLiteral) TokenLiteral() string {
-	return b.Token.Literal
 }
 
 func (i *IfExpr) TokenLiteral() string {
@@ -230,10 +217,6 @@ func (a *ArrayLiteral) TokenLiteral() string {
 
 func (i *IndexExpr) TokenLiteral() string {
 	return i.Token.Literal
-}
-
-func (n *NullLiteral) TokenLiteral() string {
-	return n.Token.Literal
 }
 
 func (f *ForStmt) TokenLiteral() string {
@@ -404,7 +387,7 @@ func (i *IfExpr) String() string {
 }
 
 // Literals
-func (i *IntegerLiteral) String() string {
+func (i *NumberLiteral) String() string {
 	return i.Token.Literal
 }
 
@@ -425,14 +408,6 @@ func (a *ArrayLiteral) String() string {
 	out.WriteString("]")
 
 	return out.String()
-}
-
-func (n *NullLiteral) String() string {
-	return "null"
-}
-
-func (b *BooleanLiteral) String() string {
-	return b.Token.Literal
 }
 
 func (f *FunctionLiteral) String() string {
@@ -502,17 +477,15 @@ func (f *ForStmt) statementNode()            {}
 
 // Expressions
 func (i *Identifier) expressionNode()      {}
-func (i *IntegerLiteral) expressionNode()  {}
+func (n *NumberLiteral) expressionNode()   {}
 func (p *PrefixExpr) expressionNode()      {}
 func (i *InfixExpr) expressionNode()       {}
-func (b *BooleanLiteral) expressionNode()  {}
 func (i *IfExpr) expressionNode()          {}
 func (f *FunctionLiteral) expressionNode() {}
 func (c *CallExpr) expressionNode()        {}
 func (s *StringLiteral) expressionNode()   {}
 func (a *ArrayLiteral) expressionNode()    {}
 func (i *IndexExpr) expressionNode()       {}
-func (n *NullLiteral) expressionNode()     {}
 func (h *HashLiteral) expressionNode()     {}
 func (f *FloatLiteral) expressionNode()    {}
 func (m *MacroLiteral) expressionNode()    {}
