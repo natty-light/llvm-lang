@@ -304,27 +304,3 @@ func (p *Parser) parseCallExpr(function ast.Expr) ast.Expr {
 	expr.Arguments = p.parseExpressionList(token.RightParen)
 	return expr
 }
-
-func (p *Parser) parseCallArguments() []ast.Expr {
-	args := make([]ast.Expr, 0)
-
-	if p.peekTokenIs(token.RightParen) {
-		p.nextToken()
-		return args
-	}
-
-	p.nextToken()                                  // advance past openParen
-	args = append(args, p.parseExpression(LOWEST)) // parse first arg
-
-	for p.peekTokenIs(token.Comma) {
-		p.nextToken() // advance comma into currToken
-		p.nextToken() // advance past comma
-		args = append(args, p.parseExpression(LOWEST))
-	}
-
-	if !p.expectPeek(token.RightParen) {
-		return nil
-	}
-
-	return args
-}
